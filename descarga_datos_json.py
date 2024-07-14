@@ -20,7 +20,7 @@ def getDF(path):
     i += 1
   return pd.DataFrame.from_dict(df, orient='index')
 
-df = getDF('C:\\Users\\guill\\OneDrive\\Desktop\\nlp_pr\\Video_Games_5.json.gz')
+df = getDF('C:\\Users\\guill\\OneDrive\\Desktop\\nlp_p1r\\Video_Games_5.json.gz')
 
 print(np.shape(df))
 
@@ -29,9 +29,10 @@ print(np.shape(df))
 df_sample = df.sample(n=10000, random_state=42)
 
 print(df_sample.info())
-
 print(np.shape(df_sample))
 
+
+# Nos quedamos con las columnas que nos interesan.
 df_sample = df_sample[['overall','reviewText']]
 
 df_sample.dropna(subset=['overall','reviewText'], inplace=True)
@@ -40,4 +41,4 @@ df_sample.drop_duplicates()
 print(np.shape(df_sample))
 
 # Guardamos el Dataframe.
-df_sample.to_csv('C:\\Users\\guill\\OneDrive\\Desktop\\nlp_pr\\Video_Games_5_sample.csv', index=False, sep = ';')
+df_sample.to_csv('C:\\Users\\guill\\OneDrive\\Desktop\\nlp_pr1\\Video_Games_5_sample.csv', index=False, sep = ';')

@@ -1,35 +1,39 @@
-import random
 import numpy as np
 import pandas as pd
 from stop_words import get_stop_words
 from nltk.stem import WordNetLemmatizer
 import re
 from sklearn.model_selection import train_test_split
-from sklearn.pipeline import Pipeline
-from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_selection import chi2
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, roc_curve, precision_recall_curve
 import matplotlib.pyplot as plt
 
-df = pd.read_csv('C:\\Users\\guill\\OneDrive\\Desktop\\nlp_pr\\Video_Games_5_sample.csv', sep=';', header=0)
+df = pd.read_csv('C:\\Users\\guill\\OneDrive\\Desktop\\nlp_pr1\\Video_Games_5_sample.csv', sep=';', header=0)
 
 print(df.head())
 
 def preprocess_text(text):
-    # Convertir a minúsculas y eliminar caracteres que no sean letras o espacios
+
+    # Convertimos a minúsculas y eliminamos caracteres que no sean letras o espacios.
     text = re.sub(r'[^a-zA-Z\s]', '', text).lower()
-    # Tokenizar por espacios
+
+    # Tokenizamos por espacios.
     tokens = text.split()
-    # Filtrar stopwords
+
+    # Filtramos stopwords.
     sw = get_stop_words(language='en')
     tokens = [word for word in tokens if word not in sw]
-    # Lemmatizar
+
+    # Lemmatizamos.
     lemmatizer = WordNetLemmatizer()
     tokens = [lemmatizer.lemmatize(word) for word in tokens]
+    
     return ' '.join(tokens)
 
-# Aplicar preprocesamiento a las reseñas
+
+# Aplicamos el preprocesamiento a las reseñas.
 df['reviewText'] = df['reviewText'].apply(preprocess_text)
 
 
@@ -54,7 +58,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 print(X_train.iloc[:10])
 
-# Extracción features.
+# Extracción features con Tfid, seleccionamos 2500 features.
 
 cv = TfidfVectorizer(
     max_df=0.95,
@@ -104,7 +108,7 @@ plt.xticks(list(range(len(c_params))), c_params)
 plt.tight_layout()
 plt.show()
 
-# Según estos resultados deberíamos escoger C = 10, si cogemos un C más grande el modelo no generaliza bien.
+# Según estos resultados deberíamos escoger C = 1, si cogemos un C más grande el modelo no generaliza bien.
 # Los resultados de test son cada vez peores.
 
 p, r, thresholds = precision_recall_curve(y_test, test_predict)
@@ -120,3 +124,12 @@ def plot_precision_recall_vs_threshold(precisions, recalls, thresholds):
 
 plot_precision_recall_vs_threshold(p, r, thresholds)
 plt.show()
+
+
+# Accuracy score:0.887
+
+# Podemos ver que el modelo es más preciso en sus predicciones positivas, esto puede ser porque el problema está
+# desbalanceado. Para evitar esto en vez de coger 10000 muestras aleatorias podríamos coger 5000 reseñas positivas
+# y 5000 negativas.
+# Se pueden también coger muestras más grandes para intentar mejorar el modelo o probar con otros modelos.
+# También se puede probar con un modelo de deep learning (no me ha dado tiempo).

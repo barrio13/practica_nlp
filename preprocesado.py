@@ -7,17 +7,17 @@ import nltk
 
 def preprocess_text(text):
 
-    # Convertir a minúsculas y eliminar caracteres que no sean letras o espacios
+    # Convertimos a minúsculas y eliminamos caracteres que no sean letras o espacios.
     text = re.sub(r'[^a-zA-Z\s]', '', text).lower()
 
-    # Tokenizar por espacios
+    # Tokenizamos por espacios.
     tokens = text.split()
 
-    # Filtrar stopwords
+    # Filtramos stopwords.
     sw = get_stop_words(language='en')
     tokens = [word for word in tokens if word not in sw]
 
-    # Lemmatizar
+    # Lemmatizamos.
     lemmatizer = WordNetLemmatizer()
     tokens = [lemmatizer.lemmatize(word) for word in tokens]
     

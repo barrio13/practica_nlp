@@ -13,11 +13,10 @@ from nltk.stem import WordNetLemmatizer
 import nltk
 from wordcloud import WordCloud, STOPWORDS
 
-# Download the WordNet resource
 nltk.download('wordnet')
 nltk.download('omw-1.4') 
 
-df = pd.read_csv('C:\\Users\\guill\\OneDrive\\Desktop\\nlp_pr\\Video_Games_5_sample.csv', sep=';', header=0)
+df = pd.read_csv('C:\\Users\\guill\\OneDrive\\Desktop\\nlp_pr1\\Video_Games_5_sample.csv', sep=';', header=0)
 
 print(df.head())
 
@@ -102,7 +101,8 @@ plt.barh(tgs_, tgs_f_)
 plt.title('Trigram frequencies')
 plt.show()
 
-# Podríamos plantearnos quitar games, game, plays, player.
+# Podríamos plantearnos quitar games, game, plays, player. 
+# Palabras comunes a ambos sentimientos que no nos aportan más información.
 
 # Nubes de palabras
 
@@ -157,6 +157,8 @@ w2v_model.build_vocab(sentences, progress_per=10000)
 
 w2v_model.train(sentences, total_examples=w2v_model.corpus_count, epochs=30, report_delay=1)
 
+
+# Miramos palabras similares de las que puedan ser representativas de un sentimiento.
 
 similar_words1 = w2v_model.wv.most_similar(positive=["fun"])
 print(similar_words1)
